@@ -5,31 +5,32 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.bai2.models.Product;
+import com.example.bai2.repositories.ProductRepository;
 
 @Service
 public class ProductService {
-    List<Product> listProduct = new ArrayList<>();
+
+    @Autowired
+    private ProductRepository productRepository;
 
     public List<Product> getAll() {
-        return listProduct;
+        return productRepository.findAll();
     }
 
     public Product get(int id) {
-        return listProduct.stream().filter(p -> p.getId() == id).findFirst().orElse(null);
+        return productRepository.findById(id).orElse(null);
     }
 
     public void add(Product newProduct) {
-        int maxId = listProduct.stream().mapToInt(Product::getId).max().orElse(0);
-        newProduct.setId(maxId + 1);
-        listProduct.add(newProduct);
+        productRepository.save(newProduct);
     }
 
     public void update(Product editProduct) {
@@ -39,10 +40,11 @@ public class ProductService {
             find.setPrice(editProduct.getPrice());
             find.setCategory(editProduct.getCategory());
 
-            // CHỈ update ảnh khi có ảnh mới
             if (editProduct.getImage() != null) {
                 find.setImage(editProduct.getImage());
             }
+
+            productRepository.save(find); // THÊM DÒNG NÀY
         }
     }
 
@@ -87,7 +89,7 @@ public class ProductService {
     public void delete(int id) {
         Product find = get(id);
         if (find != null) {
-            listProduct.remove(find);
+            productRepository.delete(find);
         }
     }
 

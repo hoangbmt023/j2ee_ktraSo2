@@ -1,0 +1,31 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout}">
+
+<head>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <meta charset="UTF-8">
+    <title>Create category</title>
+</head>
+
+<body>
+
+    <div layout:fragment="content">
+
+        <h1>Create Category</h1>
+
+        <form th:action="@{/categories/create}" th:object="${category}" method="post">
+
+            <label>Name</label>
+            <input type="text" th:field="*{name}" placeholder="Category name">
+
+            <div class="alert alert-warning" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">
+            </div>
+
+            <button type="submit">Add Category</button>
+        </form>
+
+    </div>
+
+</body>
+
+</html>
