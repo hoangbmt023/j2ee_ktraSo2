@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>Đăng ký - MiniShop</title>
+</head>
+<body>
+<div layout:fragment="content">
+
+    <div class="row justify-content-center">
+        <div class="col-md-5 col-lg-4">
+            <div class="card shadow-sm border-0 mt-4">
+                <div class="card-body p-4">
+                    <h3 class="card-title text-center mb-4">
+                        <i class="bi bi-person-plus text-success"></i> Đăng ký
+                    </h3>
+
+                    <form th:action="@{/register}" method="post">
+                        <div class="mb-3">
+                            <label for="fullname" class="form-label">Họ và tên</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-person-badge"></i></span>
+                                <input type="text" class="form-control" id="fullname"
+                                       name="fullname" placeholder="Nhập họ tên" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Tên đăng nhập</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                <input type="text" class="form-control" id="username"
+                                       name="username" placeholder="Nhập username" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Mật khẩu</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                                <input type="password" class="form-control" id="password"
+                                       name="password" placeholder="Nhập mật khẩu" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100 mb-3">
+                            <i class="bi bi-person-plus"></i> Đăng ký
+                        </button>
+                    </form>
+
+                    <div class="text-center">
+                        <span class="text-muted">Đã có tài khoản?</span>
+                        <a th:href="@{/login}" class="text-decoration-none">Đăng nhập</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

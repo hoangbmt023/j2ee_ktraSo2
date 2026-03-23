@@ -1,30 +1,28 @@
 package com.example.bai2.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
+import java.util.List;
 
-@Getter
-@Setter
+@Entity
+@Table(name = "categories")
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
-@Entity
 public class Category {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
-
-    @NotBlank(message = "Tên danh mục không được để trống")
-    @Column(nullable=false,length=255)
+    @Column(nullable = false, length = 100)
     private String name;
+
+    @OneToMany(mappedBy = "category")
+    private List<Product> products;
+
+    @Override
+    public String toString() {
+        return "Category{id=" + id + ", name='" + name + "'}";
+    }
 }
