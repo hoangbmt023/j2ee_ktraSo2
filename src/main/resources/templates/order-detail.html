@@ -46,8 +46,10 @@
         <table class="table table-hover bg-white shadow-sm" style="border-radius: 12px; overflow: hidden;">
             <thead class="table-dark">
                 <tr>
+                    <th class="text-center">Mã SP</th>
                     <th>Ảnh</th>
                     <th>Tên sản phẩm</th>
+                    <th>Danh mục</th>
                     <th class="text-end">Đơn giá</th>
                     <th class="text-center">Số lượng</th>
                     <th class="text-end">Thành tiền</th>
@@ -55,11 +57,13 @@
             </thead>
             <tbody>
                 <tr th:each="detail : ${order.orderDetails}">
+                    <td class="text-center" th:text="${detail.product.id}">1</td>
                     <td>
                         <img th:src="${detail.product.imageUrl}" style="width:50px; height:50px; object-fit:cover; border-radius:6px;"
                              onerror="this.src='https://via.placeholder.com/50?text=N/A'">
                     </td>
                     <td th:text="${detail.product.name}">Product</td>
+                    <td th:text="${detail.product.category != null ? detail.product.category.name : 'N/A'}">Category</td>
                     <td class="text-end text-nowrap"
                         th:text="${#numbers.formatDecimal(detail.unitPrice, 0, 'COMMA', 0, 'POINT')} + ' ₫'">0 ₫</td>
                     <td class="text-center" th:text="${detail.quantity}">1</td>
@@ -69,7 +73,7 @@
             </tbody>
             <tfoot class="table-light">
                 <tr>
-                    <td colspan="4" class="text-end fw-bold fs-5">Tổng cộng:</td>
+                    <td colspan="6" class="text-end fw-bold fs-5">Tổng cộng:</td>
                     <td class="text-end fw-bold fs-5 text-danger text-nowrap"
                         th:text="${#numbers.formatDecimal(order.totalPrice, 0, 'COMMA', 0, 'POINT')} + ' ₫'">0 ₫</td>
                 </tr>
