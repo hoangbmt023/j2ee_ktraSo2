@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>Quản lý sản phẩm - MiniShop</title>
+</head>
+<body>
+<div layout:fragment="content">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3><i class="bi bi-box-seam"></i> Quản lý sản phẩm</h3>
+        <a th:href="@{/admin/products/create}" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Thêm sản phẩm
+        </a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover bg-white shadow-sm" style="border-radius: 12px; overflow: hidden;">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Ảnh</th>
+                    <th>Tên sản phẩm</th>
+                    <th>Danh mục</th>
+                    <th class="text-end">Giá</th>
+                    <th class="text-center">Tồn kho</th>
+                    <th class="text-center">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="p : ${products}">
+                    <td th:text="${p.id}">1</td>
+                    <td>
+                        <img th:src="${p.imageUrl}" style="width:50px; height:50px; object-fit:cover; border-radius:6px;"
+                             onerror="this.src='https://via.placeholder.com/50?text=N/A'">
+                    </td>
+                    <td th:text="${p.name}">Product</td>
+                    <td th:text="${p.category != null ? p.category.name : 'N/A'}">Category</td>
+                    <td class="text-end text-nowrap"
+                        th:text="${#numbers.formatDecimal(p.price, 0, 'COMMA', 0, 'POINT')} + ' ₫'">0 ₫</td>
+                    <td class="text-center" th:text="${p.quantityInStock}">0</td>
+                    <td class="text-center text-nowrap">
+                        <a th:href="@{/admin/products/edit/{id}(id=${p.id})}"
+                           class="btn btn-outline-primary btn-sm me-1">
+                            <i class="bi bi-pencil"></i> Sửa
+                        </a>
+                        <form th:action="@{/admin/products/delete/{id}(id=${p.id})}" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-outline-danger btn-sm"
+                                    onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này?')">
+                                <i class="bi bi-trash"></i> Xóa
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.size(products) == 0}">
+                    <td colspan="7" class="text-center text-muted py-4">Không có sản phẩm nào.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination -->
+    <nav th:if="${totalPages > 1}" aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:classappend="${currentPage == 0 ? 'disabled' : ''}">
+                <a class="page-link" th:href="@{/admin/products(page=${currentPage - 1})}">Trước</a>
+            </li>
+            <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                th:classappend="${currentPage == i ? 'active' : ''}">
+                <a class="page-link" th:href="@{/admin/products(page=${i})}" th:text="${i + 1}">1</a>
+            </li>
+            <li class="page-item" th:classappend="${currentPage == totalPages - 1 ? 'disabled' : ''}">
+                <a class="page-link" th:href="@{/admin/products(page=${currentPage + 1})}">Sau</a>
+            </li>
+        </ul>
+    </nav>
+
+</div>
+</body>
+</html>

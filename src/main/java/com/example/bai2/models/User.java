@@ -22,4 +22,14 @@ public class User {
 
     @Column(nullable = false, length = 100)
     private String fullname;
+
+    @Column(nullable = false, length = 20)
+    private String role = "USER"; // "ADMIN" hoặc "USER"
+
+    /**
+     * Kiểm tra user có phải admin không.
+     */
+    public boolean isAdmin() {
+        return "ADMIN".equals(role);
+    }
 }

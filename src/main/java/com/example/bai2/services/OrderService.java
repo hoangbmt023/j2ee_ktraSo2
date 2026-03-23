@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrderService {
@@ -98,5 +99,19 @@ public class OrderService {
         cartService.clearCart(session);
 
         return null; // Thành công
+    }
+
+    /**
+     * Lấy danh sách đơn hàng của user (cho trang lịch sử đơn hàng).
+     */
+    public List<Order> getOrdersByUserId(Long userId) {
+        return orderRepository.findByUserIdOrderByOrderDateDesc(userId);
+    }
+
+    /**
+     * Lấy chi tiết 1 đơn hàng theo ID.
+     */
+    public Optional<Order> findOrderById(Long orderId) {
+        return orderRepository.findById(orderId);
     }
 }

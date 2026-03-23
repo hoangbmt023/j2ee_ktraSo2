@@ -5,12 +5,13 @@
 CREATE DATABASE IF NOT EXISTS ecommerce_db;
 USE ecommerce_db;
 
--- Users table
+-- Users table (with role: ADMIN / USER)
 CREATE TABLE IF NOT EXISTS users (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
-    fullname VARCHAR(100) NOT NULL
+    fullname VARCHAR(100) NOT NULL,
+    role VARCHAR(20) NOT NULL DEFAULT 'USER'
 );
 
 -- Categories table
@@ -56,9 +57,9 @@ CREATE TABLE IF NOT EXISTS order_details (
 -- =============================================
 
 -- Users (password = "123456" hashed with BCrypt)
-INSERT INTO users (username, password_hash, fullname) VALUES
-('admin', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'Admin System'),
-('user1', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'Nguyen Van A');
+INSERT INTO users (username, password_hash, fullname, role) VALUES
+('admin', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'Admin System', 'ADMIN'),
+('user1', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'Nguyen Van A', 'USER');
 
 -- Categories
 INSERT INTO categories (name) VALUES

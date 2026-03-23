@@ -61,16 +61,55 @@
                             <i class="bi bi-person-plus"></i> Đăng ký
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link position-relative" th:href="@{/cart}">
+                            <i class="bi bi-cart3 fs-5"></i> Giỏ hàng
+                            <span class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle"
+                                  th:if="${cartCount != null && cartCount > 0}"
+                                  th:text="${cartCount}">0</span>
+                        </a>
+                    </li>
                 </th:block>
 
                 <!-- Nếu ĐÃ đăng nhập -->
                 <th:block th:if="${session.loggedInUser != null}">
+
+                    <!-- ADMIN: Dropdown quản lý -->
+                    <th:block th:if="${session.loggedInUser.admin}">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-info" href="#"
+                               role="button" data-bs-toggle="dropdown">
+                                <i class="bi bi-gear"></i> Quản lý
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-dark">
+                                <li><a class="dropdown-item" th:href="@{/admin/products}">
+                                    <i class="bi bi-box-seam"></i> Sản phẩm
+                                </a></li>
+                                <li><a class="dropdown-item" th:href="@{/admin/categories}">
+                                    <i class="bi bi-tags"></i> Danh mục
+                                </a></li>
+                            </ul>
+                        </li>
+                    </th:block>
+
+                    <!-- Đơn hàng (tất cả user đều thấy) -->
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/orders}">
+                            <i class="bi bi-receipt"></i> Đơn hàng
+                        </a>
+                    </li>
+
+                    <!-- Tên user -->
                     <li class="nav-item">
                         <span class="nav-link text-warning">
                             <i class="bi bi-person-circle"></i>
                             Xin chào, <strong th:text="${session.loggedInUser.fullname}">User</strong>
+                            <span th:if="${session.loggedInUser.admin}"
+                                  class="badge bg-info ms-1">ADMIN</span>
                         </span>
                     </li>
+
+                    <!-- Giỏ hàng -->
                     <li class="nav-item">
                         <a class="nav-link position-relative" th:href="@{/cart}">
                             <i class="bi bi-cart3 fs-5"></i> Giỏ hàng
@@ -79,21 +118,11 @@
                                   th:text="${cartCount}">0</span>
                         </a>
                     </li>
+
+                    <!-- Đăng xuất -->
                     <li class="nav-item ms-2">
                         <a class="btn btn-outline-light btn-sm" th:href="@{/logout}">
                             <i class="bi bi-box-arrow-right"></i> Đăng xuất
-                        </a>
-                    </li>
-                </th:block>
-
-                <!-- Giỏ hàng cho khách (chưa đăng nhập) -->
-                <th:block th:if="${session.loggedInUser == null}">
-                    <li class="nav-item">
-                        <a class="nav-link position-relative" th:href="@{/cart}">
-                            <i class="bi bi-cart3 fs-5"></i> Giỏ hàng
-                            <span class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle"
-                                  th:if="${cartCount != null && cartCount > 0}"
-                                  th:text="${cartCount}">0</span>
                         </a>
                     </li>
                 </th:block>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>Chi tiết đơn hàng - MiniShop</title>
+</head>
+<body>
+<div layout:fragment="content">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3>
+            <i class="bi bi-receipt-cutoff"></i> Đơn hàng #<span th:text="${order.id}">1</span>
+        </h3>
+        <a th:href="@{/orders}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Quay lại
+        </a>
+    </div>
+
+    <!-- Thông tin đơn hàng -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <p><strong>Mã đơn:</strong> #<span th:text="${order.id}">1</span></p>
+                </div>
+                <div class="col-md-4">
+                    <p><strong>Ngày đặt:</strong>
+                        <span th:text="${#temporals.format(order.orderDate, 'dd/MM/yyyy HH:mm')}">01/01/2026</span>
+                    </p>
+                </div>
+                <div class="col-md-4">
+                    <p><strong>Trạng thái:</strong>
+                        <span class="badge"
+                              th:classappend="${order.status == 'PENDING' ? 'bg-warning text-dark' :
+                                               (order.status == 'COMPLETED' ? 'bg-success' : 'bg-secondary')}"
+                              th:text="${order.status}">PENDING</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chi tiết sản phẩm trong đơn hàng -->
+    <div class="table-responsive">
+        <table class="table table-hover bg-white shadow-sm" style="border-radius: 12px; overflow: hidden;">
+            <thead class="table-dark">
+                <tr>
+                    <th>Ảnh</th>
+                    <th>Tên sản phẩm</th>
+                    <th class="text-end">Đơn giá</th>
+                    <th class="text-center">Số lượng</th>
+                    <th class="text-end">Thành tiền</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="detail : ${order.orderDetails}">
+                    <td>
+                        <img th:src="${detail.product.imageUrl}" style="width:50px; height:50px; object-fit:cover; border-radius:6px;"
+                             onerror="this.src='https://via.placeholder.com/50?text=N/A'">
+                    </td>
+                    <td th:text="${detail.product.name}">Product</td>
+                    <td class="text-end text-nowrap"
+                        th:text="${#numbers.formatDecimal(detail.unitPrice, 0, 'COMMA', 0, 'POINT')} + ' ₫'">0 ₫</td>
+                    <td class="text-center" th:text="${detail.quantity}">1</td>
+                    <td class="text-end fw-bold text-nowrap"
+                        th:text="${#numbers.formatDecimal(detail.unitPrice * detail.quantity, 0, 'COMMA', 0, 'POINT')} + ' ₫'">0 ₫</td>
+                </tr>
+            </tbody>
+            <tfoot class="table-light">
+                <tr>
+                    <td colspan="4" class="text-end fw-bold fs-5">Tổng cộng:</td>
+                    <td class="text-end fw-bold fs-5 text-danger text-nowrap"
+                        th:text="${#numbers.formatDecimal(order.totalPrice, 0, 'COMMA', 0, 'POINT')} + ' ₫'">0 ₫</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+</div>
+</body>
+</html>
